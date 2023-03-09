@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react';
+import Proptypes from 'prop-types';
 import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
+import useinput from '../hooks/useinput';
 
 const ButtonWrapper = styled.div`
     margin-top: 10px;
@@ -12,16 +14,8 @@ const FormWrapper = styled(Form)`
 `;
 
 const LoginForm = ({ setIsLoggedIn }) => {
-    const [id, setId] = useState('');
-    const [password, setPassword] = useState('');
-
-    const onChangeId = useCallback((e) => {
-        setId(e.target.value);
-    }, []);
-
-    const onChangePassword = useCallback((e) => {
-        setPassword(e.target.value);
-    }, []);
+    const [id, onChangeId] = useinput('');
+    const [password, onChangePassword] = useinput('');
 
     const onSubmitForm = useCallback(() => {
         console.log(id, password);
@@ -38,7 +32,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
             <div>
                 <label htmlFor="user-password">비밀번호</label>
                 <br />
-                <Input name="user-password" value={password} onChange={onChangePassword} required />
+                <Input name="user-password" type="password" value={password} onChange={onChangePassword} required />
             </div>
             <ButtonWrapper>
                 <Button type="primary" htmlType="submit" loading={false}>로그인</Button>
@@ -47,5 +41,9 @@ const LoginForm = ({ setIsLoggedIn }) => {
         </FormWrapper>
     );
 };
+
+LoginForm.propTypes = {
+    setIsLoggedIn: Proptypes.func.isRequired
+}
 
 export default LoginForm;
